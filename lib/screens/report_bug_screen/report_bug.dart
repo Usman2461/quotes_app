@@ -1,11 +1,20 @@
 import 'package:daily_quotes/constants/colors.dart';
+import 'package:daily_quotes/models/bug.dart';
+import 'package:daily_quotes/services/firebase_service.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 class ReportBug extends StatelessWidget {
-  const ReportBug({Key? key}) : super(key: key);
+
+  TextEditingController titleController = TextEditingController();
+  TextEditingController detailController = TextEditingController();
+  ReportBug({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    FirebaseService firebaseService =
+    Provider.of<FirebaseService>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.lightGreen,
       appBar: AppBar(
@@ -19,7 +28,19 @@ class ReportBug extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Icon(Icons.send, color: Colors.black,),
+            child: GestureDetector(
+                onTap: () async{
+                  if(titleController.text.isNotEmpty && detailController.text.isNotEmpty){
+                    await firebaseService.reportABug(Bug(
+                        titleController.text,
+                        detailController.text,), context);
+                    Navigator.pop(context);
+                  }
+                  else{
+                    Fluttertoast.showToast(msg: "Please enter both title and detail");
+                  }
+                },
+                child: Icon(Icons.send, color: Colors.black,)),
           ),
         ],
       ),
@@ -36,6 +57,7 @@ class ReportBug extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextField(
+                  controller: titleController,
                   decoration: InputDecoration(
                       fillColor: Color(skyBlue),
                       filled: true,
@@ -51,6 +73,7 @@ class ReportBug extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextField(
+                  controller: detailController,
                   maxLines: 10,
                   decoration: InputDecoration(
                       fillColor: Color(skyBlue),
@@ -59,13 +82,6 @@ class ReportBug extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8.0))),
                 ),
               ),
-              ElevatedButton(onPressed: (){}, child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.attach_file),
-                  Text("Attach a File", style: TextStyle(color: Colors.black),),
-                ],
-              ),)
             ],
           ),
         ),

@@ -3,7 +3,10 @@ import 'package:daily_quotes/constants/colors.dart';
 import 'package:daily_quotes/screens/main_screen/main_screen.dart';
 import 'package:daily_quotes/widgets/cbutton.dart';
 import 'package:daily_quotes/widgets/feature_tile.dart';
+import 'package:daily_quotes/widgets/progress_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MotivationPremium extends StatelessWidget {
   const MotivationPremium({Key? key}) : super(key: key);
@@ -60,8 +63,30 @@ class MotivationPremium extends StatelessWidget {
                   CButton(title: 'Buy Now', color:Color(skyBlue), onTap: (){
                     Navigator.pushNamed(context, "/check-out");
                   },),
-                  TextButton(onPressed: () {
-                    Navigator.of(context).push(CustomPageRoute2(child:MainScreen(), begin: Offset(1,0)) );
+                  TextButton(onPressed: () async{
+                    try {
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context)
+                          {
+                            return ProgressDialog(message: "Just a moment. We are preparing...",);
+                          }
+                      );
+                      UserCredential user = await FirebaseAuth.instance.signInAnonymously();
+                      if(user!=null){
+                        Navigator.of(context).push(CustomPageRoute2(child:MainScreen(), begin: Offset(1,0)) );
+                      }
+                      else{
+                        Fluttertoast.showToast(msg: "Unable to fetch data from server");
+                      }
+
+                    } on FirebaseAuthException catch  (e) {
+                      print('Failed to continue: ${e.code}');
+                      print(e.message);
+                      Fluttertoast.showToast(msg: "Unable to fetch data from server");
+                    }
+
                   },
                   child: Text("Proceed to basic (free version)", style: TextStyle(color: Colors.black),),),
                   SizedBox(height: 20.0,),

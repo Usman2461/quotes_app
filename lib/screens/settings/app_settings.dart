@@ -1,12 +1,18 @@
 import 'package:daily_quotes/constants/colors.dart';
+import 'package:daily_quotes/providers/theme_provider.dart';
 import 'package:daily_quotes/widgets/big_text.dart';
+import 'package:daily_quotes/widgets/rate_app.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 
 class AppSettings extends StatelessWidget {
-  const AppSettings({Key? key}) : super(key: key);
+  AppSettings({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider> (context, listen: false);
     return Scaffold(
       backgroundColor: Color(0xff75ffff),
       appBar: PreferredSize(
@@ -44,25 +50,47 @@ class AppSettings extends StatelessWidget {
                 tileColor: Colors.white,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
                 title:Text("Notifications", style: TextStyle(fontSize: 24.0),),value: true, onChanged: (value){}),
-            Divider(thickness: 1,),
-            SwitchListTile.adaptive(
-                tileColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
-                title:Text("Sound", style: TextStyle(fontSize: 24.0)),value: false, onChanged: (value){}),
               Divider(thickness: 1,),
-            SwitchListTile.adaptive(
-                tileColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
-                title:Text("Font Size", style: TextStyle(fontSize: 24.0)),value: false, onChanged: (value){}),
-              Divider(thickness: 1,),
-            SwitchListTile.adaptive(
-                tileColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
-                title:Text("Dark Mode", style: TextStyle(fontSize: 24.0)),value: false, onChanged: (value){}),
+
+            Consumer<ThemeProvider>(
+              builder: (BuildContext context, provider, Widget? child) {
+                return   Column(
+                  children: [
+                    ListTile(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
+                      leading: Text("Fonts", style: TextStyle(fontSize: 24.0)) ,
+                      tileColor: Colors.white, trailing: PopupMenuButton(
+                      itemBuilder: (BuildContext context) {
+                      return [
+                        PopupMenuItem(child: Text("Font1"),value: "font1", onTap: (){
+                           provider.toogleFont(GoogleFonts.aBeeZee().fontFamily!);
+                        },),
+                        PopupMenuItem(child: Text("Font1"),value:"font2", onTap: (){
+                                    provider.toogleFont(GoogleFonts.abel().fontFamily!);
+                        },),
+                        PopupMenuItem(child: Text("Font1"),value:"font3", onTap: (){
+                                    provider.toogleFont(GoogleFonts.abrilFatface().fontFamily!);
+                        },),
+                      ];
+                    },initialValue: "font1", icon: Icon(Icons.arrow_drop_down),),),
+                    Divider(thickness: 1,),
+                    SwitchListTile.adaptive(
+                        tileColor: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
+                        title:Text("Dark Mode", style: TextStyle(fontSize: 24.0)),value: provider.isDarkMode, onChanged: (value){
+                      provider.toggleTheme(value);
+                    })
+                  ],
+                );
+              },
+            ),
               Divider(thickness: 1,),
             ListTile(
               tileColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
+              onTap: (){
+                Navigator.pushNamed(context, "/privacy-policy");
+              },
               title: Text("Privacy Policy", style: TextStyle(fontSize: 24.0)),),
               Divider(thickness: 1,),
             ListTile(
@@ -77,6 +105,10 @@ class AppSettings extends StatelessWidget {
               Divider(thickness: 1,),
             ListTile(
               tileColor: Colors.white,
+              onTap: (){
+
+
+              },
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
               title: Text("Rate Us", style: TextStyle(fontSize: 24.0)),),
 

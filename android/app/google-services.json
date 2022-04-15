@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "310331191555",
+    "project_id": "quotesapp-e7b96",
+    "storage_bucket": "quotesapp-e7b96.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310331191555:android:0dc8178372ccac3d8f7936",
+        "android_client_info": {
+          "package_name": "com.example.quotesapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "310331191555-nbmu4bbf1buhqp78ke913bpn5mlm5fh1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.quotesapp",
+            "certificate_hash": "bdd9b971a4ae95fe0169f90f4f7fa0f7eb9cd21a"
+          }
+        },
+        {
+          "client_id": "310331191555-ou2urfqp4la8olffj49dp7850keaigl9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxYBQbIepHi5adwOUtgg7nmXWGX9QEOyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "310331191555-ou2urfqp4la8olffj49dp7850keaigl9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "310331191555-p8c9e1li985c24h4d4if1f5v0br8l6rj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.quotesapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310331191555:android:72f065171c948a6f8f7936",
+        "android_client_info": {
+          "package_name": "com.qutech.quotesapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "310331191555-uopnvvtmhnu3vobtganp3aic35shat25.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.qutech.quotesapp",
+            "certificate_hash": "bdd9b971a4ae95fe0169f90f4f7fa0f7eb9cd21a"
+          }
+        },
+        {
+          "client_id": "310331191555-ou2urfqp4la8olffj49dp7850keaigl9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxYBQbIepHi5adwOUtgg7nmXWGX9QEOyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "310331191555-ou2urfqp4la8olffj49dp7850keaigl9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "310331191555-p8c9e1li985c24h4d4if1f5v0br8l6rj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.quotesapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

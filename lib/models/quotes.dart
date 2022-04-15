@@ -1,37 +1,16 @@
-class Quote{
+class Quote {
+  String quoteId = "";
   String quote;
   String author;
+  String submitby = "";
 
-  Quote(this.quote, this.author);
+  Quote(this.quote, this.author, {this.submitby = "", this.quoteId = ""});
+
+  Quote.fromJson(Map<String, dynamic> json)
+      : this(json["quote"] as String, json["author"] as String,
+            submitby: json["submitby"] as String);
+
+  Map<String, Object?> toJson() {
+    return {"quote": quote, "author": author, "submitby": submitby};
+  }
 }
-
-
-List<Quote> quotes = [
-  Quote("“If you want to live a happy life, tie it to a goal, not to people or things.”","Albert Einstein"),
-  Quote("“Never let the fear of striking out keep you from playing the game.”","Babe Ruth"),
-  Quote("“Money and success don’t change people; they merely amplify what is already there.”","Will Smith"),
-  Quote("“Your time is limited, so don’t waste it living someone else’s life."
-      " Don’t be trapped by dogma – which is living with the results of other people’s thinking.”","Steve Jobs"),
-  Quote("“If you want to live a happy life, tie it to a goal, not to people or things.”","Albert Einstein"),
-  Quote("“Never let the fear of striking out keep you from playing the game.”","Babe Ruth"),
-  Quote("“Money and success don’t change people; they merely amplify what is already there.”","Will Smith"),
-  Quote("“Your time is limited, so don’t waste it living someone else’s life."
-      " Don’t be trapped by dogma – which is living with the results of other people’s thinking.”","Steve Jobs"),
-  Quote("“If you want to live a happy life, tie it to a goal, not to people or things.”","Albert Einstein"),
-  Quote("“Never let the fear of striking out keep you from playing the game.”","Babe Ruth"),
-  Quote("“Money and success don’t change people; they merely amplify what is already there.”","Will Smith"),
-  Quote("“Your time is limited, so don’t waste it living someone else’s life."
-      " Don’t be trapped by dogma – which is living with the results of other people’s thinking.”","Steve Jobs"),
-  Quote("“If you want to live a happy life, tie it to a goal, not to people or things.”","Albert Einstein"),
-  Quote("“Never let the fear of striking out keep you from playing the game.”","Babe Ruth"),
-  Quote("“Money and success don’t change people; they merely amplify what is already there.”","Will Smith"),
-  Quote("“Your time is limited, so don’t waste it living someone else’s life."
-      " Don’t be trapped by dogma – which is living with the results of other people’s thinking.”","Steve Jobs"),
-
-];
-
-List<Quote> quotesmain = [
-  Quote("“If you want to live a happy life, tie it to a goal, not to people or things.”","Albert Einstein"),
-
-
-];

@@ -34,7 +34,7 @@ class QuoteScreen extends StatelessWidget {
                         SizedBox(width: 5.0,),
                         Text("Go Premium", style: TextStyle(color: Color(0xffe3cf28)),),
                       ],
-                    ))
+                    )),
                   ],
                 ),
               ))),

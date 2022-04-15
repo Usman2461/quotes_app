@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daily_quotes/constants/colors.dart';
 import 'package:daily_quotes/models/quotes.dart';
 import 'package:daily_quotes/widgets/big_text.dart';
@@ -5,8 +6,8 @@ import 'package:daily_quotes/widgets/cbutton.dart';
 import 'package:flutter/material.dart';
 
 class PastQuotes extends StatelessWidget {
-  const PastQuotes({Key? key}) : super(key: key);
-
+   PastQuotes({Key? key}) : super(key: key);
+  final Stream<QuerySnapshot> quotesStream = FirebaseFirestore.instance.collection('quotes').snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(backgroundColor: Colors.lightGreen,
@@ -42,22 +43,47 @@ class PastQuotes extends StatelessWidget {
         BigText(text: "Past Quotes"),
         SizedBox(height: 10,),
         Expanded(
-          child: ListView.builder(
-              shrinkWrap: true,
-              itemBuilder: (context, index){
-            return Container(
-              color: index%2==0?Color(skyBlue):Colors.lightGreen,
-              child: Row(
-                children: [
-                  Container(
-                    width:MediaQuery.of(context).size.width-40,
-                    padding: EdgeInsets.all(16.0),
-                    child: Text(quotes[index].quote),),
-                  Icon(Icons.more_vert_outlined)
-                ],
-              ),
-            );
-          }, itemCount: quotes.length),
+          child: StreamBuilder(
+            stream: quotesStream,
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if(snapshot.hasError){
+                return Center(child: Text("Something went wrong"));
+              }
+              if(snapshot.connectionState == ConnectionState.waiting){
+                return Center(child: CircularProgressIndicator(),);
+              }
+              return ListView.builder(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index){
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      color: index%2==0?Color(skyBlue):Colors.green,
+                    ),
+
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(snapshot.data!.docs[index].get("quote")),
+                              Text(snapshot.data!.docs[index].get("author")),
+                            ],
+                          ),),
+                        Icon(Icons.copy)
+                      ],
+                    ),
+                  ),
+                );
+              }, itemCount: snapshot.data!.docs.length-1);
+            }
+          ),
         )
 
       ],),

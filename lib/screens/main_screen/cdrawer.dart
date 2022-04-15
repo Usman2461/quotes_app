@@ -1,5 +1,6 @@
 import 'package:daily_quotes/animations/custom_page_route2.dart';
 import 'package:daily_quotes/constants/colors.dart';
+import 'package:daily_quotes/providers/theme_provider.dart';
 import 'package:daily_quotes/screens/acknowledgements_screen/acknowledgement.dart';
 import 'package:daily_quotes/screens/add_quote/add_quotes.dart';
 import 'package:daily_quotes/screens/app_icons/app_icons.dart';
@@ -13,12 +14,16 @@ import 'package:daily_quotes/screens/settings/app_settings.dart';
 import 'package:daily_quotes/widgets/cbutton.dart';
 import 'package:daily_quotes/widgets/settings_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CDrawer extends StatelessWidget {
-  const CDrawer({Key? key}) : super(key: key);
+
+   CDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+
     return Container(
       color: Color(skyBlue),
       child: SafeArea(
@@ -79,14 +84,6 @@ class CDrawer extends StatelessWidget {
                       },
                       icon: Icon(Icons.settings),
                     ),
-                    SettingTile(
-                      title: 'Reminders',
-                      onTap: () {
-                        Navigator.of(context).push(CustomPageRoute2(child:Reminders(), begin: Offset(1,0)) );
-                      },
-                      icon: Icon(Icons.notifications),
-                    ),
-
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
                       child: Stack(
