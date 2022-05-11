@@ -1,3 +1,4 @@
+import 'package:daily_quotes/models/language_constants.dart';
 import 'package:daily_quotes/providers/theme_provider.dart';
 import 'package:daily_quotes/screens/about_us/about_us.dart';
 import 'package:daily_quotes/screens/acknowledgements_screen/acknowledgement.dart';
@@ -12,16 +13,17 @@ import 'package:daily_quotes/screens/my_collections/my_collections.dart';
 import 'package:daily_quotes/screens/past_quotes/past_quotes.dart';
 import 'package:daily_quotes/screens/privacy_policy/privacy_policy.dart';
 import 'package:daily_quotes/screens/quote_screen/quote_screen.dart';
-import 'package:daily_quotes/screens/reminder/reminder.dart';
 import 'package:daily_quotes/screens/report_bug_screen/report_bug.dart';
 import 'package:daily_quotes/screens/settings/app_settings.dart';
 import 'package:daily_quotes/screens/success_screen/success_screen.dart';
 import 'package:daily_quotes/screens/support_screen/support_screen.dart';
 import 'package:daily_quotes/services/firebase_service.dart';
 import 'package:daily_quotes/widgets/rate_app.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,10 +31,33 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+
+  static void setLocale(BuildContext context, Locale newLocale){
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.setLocale(newLocale);
+  }
+
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale? _locale;
+
+  setLocale(Locale locale){
+    setState(() {
+      _locale = locale;
+    });
+  }
+  @override
+  void didChangeDependencies() {
+    getLocale().then((locale) => setLocale(locale));
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -47,6 +72,9 @@ class MyApp extends StatelessWidget {
          return MaterialApp(
               title: 'Flutter Demo',
               debugShowCheckedModeBanner: false,
+           localizationsDelegates: AppLocalizations.localizationsDelegates,
+           supportedLocales: AppLocalizations.supportedLocales,
+              locale: _locale,
               themeMode: themeProvider.themeMode ,
               theme: MyThemes.lightTheme.copyWith(
                 textTheme: Theme.of(context).textTheme.apply(fontFamily: themeProvider.fontFamily)
@@ -59,7 +87,6 @@ class MyApp extends StatelessWidget {
                 "/motivate-buy": (context)=>MotivationPremium(),
                 "/main-screen" : (context)=>MainScreen(),
                 "/favourite" : (context)=>FavouriteQuotes(),
-                "/reminders" : (context)=>Reminders(),
                 "/quote" : (context)=>QuoteScreen(),
                 "/past-quote" : (context)=>PastQuotes(),
                 "/collections" : (context)=>Collections(),

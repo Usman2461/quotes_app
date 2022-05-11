@@ -1,5 +1,6 @@
 import 'package:daily_quotes/animations/custom_page_route2.dart';
 import 'package:daily_quotes/constants/colors.dart';
+import 'package:daily_quotes/models/language_constants.dart';
 import 'package:daily_quotes/screens/main_screen/main_screen.dart';
 import 'package:daily_quotes/widgets/cbutton.dart';
 import 'package:daily_quotes/widgets/feature_tile.dart';
@@ -7,6 +8,10 @@ import 'package:daily_quotes/widgets/progress_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../main.dart';
+import '../../models/languages.dart';
 
 class MotivationPremium extends StatelessWidget {
   const MotivationPremium({Key? key}) : super(key: key);
@@ -28,8 +33,36 @@ class MotivationPremium extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         centerTitle: true,
-        title: Text("Daily Quotes Premium", style: TextStyle(color: Color(AdarkGrey)),),
-        leading: Icon(Icons.arrow_back_ios, color: Color(AdarkGrey),)),
+        title: Text(AppLocalizations.of(context)!.dailyQuotesPremium, style: TextStyle(color: Color(AdarkGrey)),),
+        leading: Icon(Icons.arrow_back_ios, color: Color(AdarkGrey),),
+      actions: [
+        DropdownButton(
+          underline: SizedBox(),
+            icon: Icon(Icons.language, color: Colors.white,),
+          onChanged: (Language? language) async {
+            if(language !=null){
+              Locale _locale = await setLocale(language. languageCode);
+              MyApp.setLocale(context, _locale);
+            }
+          },
+          items: Language.languageList()
+            .map((e) => DropdownMenuItem<Language>(
+                  value: e,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        e.languageCode,
+                        style: TextStyle(fontSize: 30),
+                      ),
+                      Text(e.name),
+                    ],
+                  ),
+                ),
+            ).toList(),
+        ),
+      ],
+      ),
 
       body: SingleChildScrollView(
         child: Padding(

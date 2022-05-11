@@ -1,4 +1,5 @@
 import 'package:daily_quotes/constants/colors.dart';
+import 'package:daily_quotes/models/languages.dart';
 import 'package:daily_quotes/providers/theme_provider.dart';
 import 'package:daily_quotes/widgets/big_text.dart';
 import 'package:daily_quotes/widgets/rate_app.dart';

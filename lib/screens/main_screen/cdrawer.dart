@@ -8,7 +8,6 @@ import 'package:daily_quotes/screens/donation/donation_screen.dart';
 import 'package:daily_quotes/screens/favourites/favourites_screen.dart';
 import 'package:daily_quotes/screens/my_collections/my_collections.dart';
 import 'package:daily_quotes/screens/past_quotes/past_quotes.dart';
-import 'package:daily_quotes/screens/reminder/reminder.dart';
 import 'package:daily_quotes/screens/report_bug_screen/report_bug.dart';
 import 'package:daily_quotes/screens/settings/app_settings.dart';
 import 'package:daily_quotes/widgets/cbutton.dart';
