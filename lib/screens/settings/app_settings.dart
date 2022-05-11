@@ -8,6 +8,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 
+import '../../main.dart';
+import '../../models/language_constants.dart';
+
 class AppSettings extends StatelessWidget {
   AppSettings({Key? key,}) : super(key: key);
 
@@ -57,6 +60,34 @@ class AppSettings extends StatelessWidget {
               builder: (BuildContext context, provider, Widget? child) {
                 return   Column(
                   children: [
+                    ListTile(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
+                      leading: Text("Languages", style: TextStyle(fontSize: 24.0)) ,
+                      tileColor: Colors.white, trailing: DropdownButton(
+          underline: SizedBox(),
+            icon: Icon(Icons.language, color: Colors.white,),
+          onChanged: (Language? language) async {
+            if(language !=null){
+              Locale _locale = await setLocale(language. languageCode);
+              MyApp.setLocale(context, _locale);
+            }
+          },
+          items: Language.languageList()
+            .map((e) => DropdownMenuItem<Language>(
+                  value: e,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        e.languageCode,
+                        style: TextStyle(fontSize: 30),
+                      ),
+                      Text(e.name),
+                    ],
+                  ),
+                ),
+            ).toList(),
+        ),),
                     ListTile(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
                       leading: Text("Fonts", style: TextStyle(fontSize: 24.0)) ,

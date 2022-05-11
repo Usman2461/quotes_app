@@ -35,33 +35,7 @@ class MotivationPremium extends StatelessWidget {
         centerTitle: true,
         title: Text(AppLocalizations.of(context)!.dailyQuotesPremium, style: TextStyle(color: Color(AdarkGrey)),),
         leading: Icon(Icons.arrow_back_ios, color: Color(AdarkGrey),),
-      actions: [
-        DropdownButton(
-          underline: SizedBox(),
-            icon: Icon(Icons.language, color: Colors.white,),
-          onChanged: (Language? language) async {
-            if(language !=null){
-              Locale _locale = await setLocale(language. languageCode);
-              MyApp.setLocale(context, _locale);
-            }
-          },
-          items: Language.languageList()
-            .map((e) => DropdownMenuItem<Language>(
-                  value: e,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        e.languageCode,
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      Text(e.name),
-                    ],
-                  ),
-                ),
-            ).toList(),
-        ),
-      ],
+
       ),
 
       body: SingleChildScrollView(
