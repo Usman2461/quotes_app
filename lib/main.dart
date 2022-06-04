@@ -18,6 +18,7 @@ import 'package:daily_quotes/screens/settings/app_settings.dart';
 import 'package:daily_quotes/screens/success_screen/success_screen.dart';
 import 'package:daily_quotes/screens/support_screen/support_screen.dart';
 import 'package:daily_quotes/services/firebase_service.dart';
+import 'package:daily_quotes/widgets/rateInit.dart';
 import 'package:daily_quotes/widgets/rate_app.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -100,7 +101,7 @@ class _MyAppState extends State<MyApp> {
                 "/privacy-policy" : (context) => PrivacyPolicy(),
                 "/about-us" : (context) => AboutUs(),
                 "/support" : (context) => SupportScreen(),
-                "/app-settings" : (context) =>AppSettings(),
+                "/app-settings" : (context) =>  RateAppInitWidget(builder:(rateMyApp)=> AppSettings(rateMyApp: rateMyApp,)),
 
               },
             );

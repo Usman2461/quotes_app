@@ -14,15 +14,13 @@ import 'package:daily_quotes/widgets/cbutton.dart';
 import 'package:daily_quotes/widgets/settings_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 
 class CDrawer extends StatelessWidget {
-
-   CDrawer({Key? key}) : super(key: key);
+  CDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
-
     return Container(
       color: Color(skyBlue),
       child: SafeArea(
@@ -30,9 +28,18 @@ class CDrawer extends StatelessWidget {
           child: Column(
             children: [
               UserAccountsDrawerHeader(
-                currentAccountPicture: Image(image: AssetImage("assets/images/icon1.png"),),
+                  currentAccountPicture: Image(
+                    image: AssetImage("assets/images/icon1.png"),
+                  ),
                   decoration: BoxDecoration(color: Colors.lightGreen),
-                  accountName: Text("Your Name", style: TextStyle(color: Colors.black),), accountEmail: Text("youremail@gmail.com", style: TextStyle(color:Colors.black),)),
+                  accountName: Text(
+                    "Your Name",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  accountEmail: Text(
+                    "youremail@gmail.com",
+                    style: TextStyle(color: Colors.black),
+                  )),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -43,12 +50,17 @@ class CDrawer extends StatelessWidget {
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          Image(image: AssetImage("assets/images/heading.png"),),
+                          Image(
+                            image: AssetImage("assets/images/heading.png"),
+                          ),
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
                               "Daily Quotes",
-                              style: TextStyle(color:Color(AdarkGrey),fontSize: 30, fontWeight: FontWeight.w600),
+                              style: TextStyle(
+                                  color: Color(AdarkGrey),
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w600),
                             ),
                           ),
                         ],
@@ -65,7 +77,9 @@ class CDrawer extends StatelessWidget {
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          Image(image: AssetImage("assets/images/heading2.png"),),
+                          Image(
+                            image: AssetImage("assets/images/heading2.png"),
+                          ),
                           Positioned(
                             right: 50,
                             child: Text(
@@ -79,7 +93,10 @@ class CDrawer extends StatelessWidget {
                     SettingTile(
                       title: 'General',
                       onTap: () {
-                        Navigator.of(context).push(CustomPageRoute2(child:AppSettings(), begin: Offset(1,0)) );
+                         Navigator.of(context).push(CustomPageRoute2(
+                            child: AppSettings(
+                             ),
+                            begin: Offset(1, 0)));
                       },
                       icon: Icon(Icons.settings),
                     ),
@@ -88,7 +105,9 @@ class CDrawer extends StatelessWidget {
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          Image(image: AssetImage("assets/images/heading2.png"),),
+                          Image(
+                            image: AssetImage("assets/images/heading2.png"),
+                          ),
                           Positioned(
                             right: 30,
                             child: Text(
@@ -102,54 +121,59 @@ class CDrawer extends StatelessWidget {
                     SettingTile(
                       title: 'My Groups',
                       onTap: () {
-                        Navigator.of(context).push(CustomPageRoute2(child:Collections(), begin: Offset(1,0)) );
+                        Navigator.of(context).push(CustomPageRoute2(
+                            child: Collections(), begin: Offset(1, 0)));
                       },
                       icon: Icon(Icons.collections_bookmark_outlined),
                     ),
                     SettingTile(
                       title: 'Submit a Quote',
                       onTap: () {
-                        Navigator.of(context).push(CustomPageRoute2(child:AddQuote(), begin: Offset(1,0)) );
+                        Navigator.of(context).push(CustomPageRoute2(
+                            child: AddQuote(), begin: Offset(1, 0)));
                       },
                       icon: Icon(Icons.edit),
                     ),
                     SettingTile(
                       title: 'Past Quotes',
                       onTap: () {
-                        Navigator.of(context).push(CustomPageRoute2(child:PastQuotes(), begin: Offset(1,0)) );
+                        Navigator.of(context).push(CustomPageRoute2(
+                            child: PastQuotes(), begin: Offset(1, 0)));
                       },
                       icon: Icon(Icons.timelapse_outlined),
                     ),
                     SettingTile(
                       title: 'Favorites',
                       onTap: () {
-                        Navigator.of(context).push(CustomPageRoute2(child:FavouriteQuotes(), begin: Offset(1,0)) );
+                        Navigator.of(context).push(CustomPageRoute2(
+                            child: FavouriteQuotes(), begin: Offset(1, 0)));
                       },
                       icon: Icon(Icons.favorite),
                     ),
                     SettingTile(
                       title: 'Donate',
                       onTap: () {
-                        Navigator.of(context).push(CustomPageRoute2(child:DonationScreen(), begin: Offset(1,0)) );
+                        Navigator.of(context).push(CustomPageRoute2(
+                            child: DonationScreen(), begin: Offset(1, 0)));
                       },
                       icon: Icon(Icons.monetization_on_sharp),
                     ),
                     SettingTile(
                       title: 'Report a Bug',
                       onTap: () {
-                        Navigator.of(context).push(CustomPageRoute2(child:ReportBug(), begin: Offset(1,0)) );
+                        Navigator.of(context).push(CustomPageRoute2(
+                            child: ReportBug(), begin: Offset(1, 0)));
                       },
                       icon: Icon(Icons.monetization_on_sharp),
                     ),
                     SettingTile(
                       title: 'Acknowledgements',
                       onTap: () {
-                        Navigator.of(context).push(CustomPageRoute2(child:Acknowledgements(), begin: Offset(1,0)) );
+                        Navigator.of(context).push(CustomPageRoute2(
+                            child: Acknowledgements(), begin: Offset(1, 0)));
                       },
                       icon: Icon(Icons.account_tree),
                     ),
-
-
                   ],
                 ),
               ),
