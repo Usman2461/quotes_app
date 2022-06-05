@@ -217,41 +217,41 @@ class _MainScreenState extends State<MainScreen> {
                                                         : Colors.white)),
                                         IconButton(
                                             onPressed: () async {
-                                              DocumentSnapshot document =
-                                                  await FirebaseFirestore
-                                                      .instance
-                                                      .collection('quotes')
-                                                      .doc(snapshot
-                                                          .data!.docs.last.id)
-                                                      .collection("Fav")
-                                                      .doc(user?.uid)
-                                                      .get();
+                                              // DocumentSnapshot document =
+                                              //     await FirebaseFirestore
+                                              //         .instance
+                                              //         .collection('quotes')
+                                              //         .doc(snapshot
+                                              //             .data!.docs.last.id)
+                                              //         .collection("Fav")
+                                              //         .doc(user?.uid)
+                                              //         .get();
 
-                                              print(document["status"]);
+                                              // print(document["status"]);
 
                                               await Share.share(myquotetext);
-                                              FirebaseFirestore.instance
-                                                  .collection('quotes')
-                                                  .doc(snapshot
-                                                      .data!.docs.last.id)
-                                                  .collection("Fav")
-                                                  .doc(user?.uid)
-                                                  .get()
-                                                  .then((DocumentSnapshot
-                                                          documentSnapshot) =>
-                                                      {
-                                                        print(documentSnapshot
-                                                            .data())
-                                                      });
+                                              // FirebaseFirestore.instance
+                                              //     .collection('quotes')
+                                              //     .doc(snapshot
+                                              //         .data!.docs.last.id)
+                                              //     .collection("Fav")
+                                              //     .doc(user?.uid)
+                                              //     .get()
+                                              //     .then((DocumentSnapshot
+                                              //             documentSnapshot) =>
+                                              //         {
+                                              //           print(documentSnapshot
+                                              //               .data())
+                                              //         });
 
-                                              print(snapshot.data!.docs.map(
-                                                  (DocumentSnapshot
-                                                      documentSnapshot) {
-                                                Map<String, dynamic> data =
-                                                    documentSnapshot.data()!
-                                                        as Map<String, dynamic>;
-                                                return data['author'];
-                                              }));
+                                              // print(snapshot.data!.docs.map(
+                                              //     (DocumentSnapshot
+                                              //         documentSnapshot) {
+                                              //   Map<String, dynamic> data =
+                                              //       documentSnapshot.data()!
+                                              //           as Map<String, dynamic>;
+                                              //   return data['author'];
+                                              // }));
                                             },
                                             icon: Icon(Icons.share_rounded)),
                                       ],

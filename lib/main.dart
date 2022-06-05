@@ -38,21 +38,21 @@ class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
 
-  static void setLocale(BuildContext context, Locale newLocale){
+  static void setLocale(BuildContext context, Locale newLocale) {
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
     state?.setLocale(newLocale);
   }
-
 }
 
 class _MyAppState extends State<MyApp> {
   Locale? _locale;
 
-  setLocale(Locale locale){
+  setLocale(Locale locale) {
     setState(() {
       _locale = locale;
     });
   }
+
   @override
   void didChangeDependencies() {
     getLocale().then((locale) => setLocale(locale));
@@ -66,47 +66,46 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => FirebaseService()),
         ChangeNotifierProvider(create: (_) => ThemeProvider())
       ],
-
-      child: Builder(
-        builder: (context) {
-          final themeProvider = Provider.of<ThemeProvider>(context);
-         return MaterialApp(
-              title: 'Flutter Demo',
-              debugShowCheckedModeBanner: false,
-           localizationsDelegates: AppLocalizations.localizationsDelegates,
-           supportedLocales: AppLocalizations.supportedLocales,
-              locale: _locale,
-              themeMode: themeProvider.themeMode ,
-              theme: MyThemes.lightTheme.copyWith(
-                textTheme: Theme.of(context).textTheme.apply(fontFamily: themeProvider.fontFamily)
-              ),
-              darkTheme: MyThemes.darkTheme.copyWith(
-                  textTheme: Theme.of(context).textTheme.apply(fontFamily: themeProvider.fontFamily)
-              ),
-              initialRoute: "/motivate-buy",
-              routes: {
-                "/motivate-buy": (context)=>MotivationPremium(),
-                "/main-screen" : (context)=>MainScreen(),
-                "/favourite" : (context)=>FavouriteQuotes(),
-                "/quote" : (context)=>QuoteScreen(),
-                "/past-quote" : (context)=>PastQuotes(),
-                "/collections" : (context)=>Collections(),
-                "/categories" : (context)=>Categories(),
-                "/check-out" : (context) => CheckOut(),
-                "/payment" : (context) => ProceedPayment(),
-                "/donate" : (context) => DonationScreen(),
-                "/success" : (context) => SuccessScreen(),
-                "/report-bug" : (context) => ReportBug(),
-                "/acknowledgements" : (context) => Acknowledgements(),
-                "/privacy-policy" : (context) => PrivacyPolicy(),
-                "/about-us" : (context) => AboutUs(),
-                "/support" : (context) => SupportScreen(),
-                "/app-settings" : (context) =>  RateAppInitWidget(builder:(rateMyApp)=> AppSettings(rateMyApp: rateMyApp,)),
-
-              },
-            );
-        }
-      ),
+      child: Builder(builder: (context) {
+        final themeProvider = Provider.of<ThemeProvider>(context);
+        return MaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: _locale,
+          themeMode: themeProvider.themeMode,
+          theme: MyThemes.lightTheme.copyWith(
+              textTheme: Theme.of(context)
+                  .textTheme
+                  .apply(fontFamily: themeProvider.fontFamily)),
+          darkTheme: MyThemes.darkTheme.copyWith(
+              textTheme: Theme.of(context)
+                  .textTheme
+                  .apply(fontFamily: themeProvider.fontFamily)),
+          initialRoute: "/motivate-buy",
+          routes: {
+            "/motivate-buy": (context) => MotivationPremium(),
+            "/main-screen": (context) => MainScreen(),
+            "/favourite": (context) => FavouriteQuotes(),
+            "/quote": (context) => QuoteScreen(),
+            "/past-quote": (context) => PastQuotes(),
+            "/collections": (context) => Collections(),
+            "/categories": (context) => Categories(),
+            "/check-out": (context) => CheckOut(),
+            "/payment": (context) => ProceedPayment(),
+            "/donate": (context) => DonationScreen(),
+            "/success": (context) => SuccessScreen(),
+            "/report-bug": (context) => ReportBug(),
+            "/acknowledgements": (context) => Acknowledgements(),
+            "/privacy-policy": (context) => PrivacyPolicy(),
+            "/about-us": (context) => AboutUs(),
+            "/support": (context) => SupportScreen(),
+            "/app-settings": (context) =>
+                RateAppInitWidget(builder: (rateMyApp) => AppSettings()),
+          },
+        );
+      }),
     );
   }
 }
