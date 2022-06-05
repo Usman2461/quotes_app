@@ -46,8 +46,8 @@ dependencies:
   google_fonts: 2.1.0
   rate_my_app: ^1.1.1+1
   in_app_review: ^2.0.4
+  flutter_markdown: ^0.6.9
   rating_dialog: ^2.0.4
-  
   shared_preferences: ^2.0.13
 
 dev_dependencies:
@@ -78,7 +78,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
-  #   - images/a_dot_ham.jpeg
+    - assets/PrivacyPolicy.md
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -1,13 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:markdown/markdown.dart';
-// import 'package:flutter_markdown/flutter_markdown.dart';
-
-class PrivacyPolicy extends StatelessWidget {
-  String _mark = """ 
-
-  **Privacy Policy**
+﻿**Privacy Policy**
 
 QutechSoft Inc built the QQuotes app as an Ad Supported app. This SERVICE is provided by QutechSoft Inc at no cost and is intended for use as is.
 
@@ -72,39 +63,3 @@ This policy is effective as of 2022-05-30
 
 If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at assist@qutechdevelopers.com.
 
-""";
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: FutureBuilder(
-                future:
-                    Future.delayed(Duration(milliseconds: 150)).then((value) {
-                  return rootBundle.loadString('assets/PrivacyPolicy.md');
-                }),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Markdown(
-                      data: snapshot.data.toString(),
-                    );
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
