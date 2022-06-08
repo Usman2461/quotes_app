@@ -1,12 +1,28 @@
+import 'package:clipboard/clipboard.dart';
 import 'package:daily_quotes/constants/colors.dart';
+import 'package:daily_quotes/floor_db/quotes_repository.dart';
 import 'package:daily_quotes/widgets/big_text.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:share_plus/share_plus.dart';
 
-class FavouriteQuotes extends StatelessWidget {
+import '../../widgets/quote_widget.dart';
+
+class FavouriteQuotes extends StatefulWidget {
   const FavouriteQuotes({Key? key}) : super(key: key);
 
   @override
+  State<FavouriteQuotes> createState() => _FavouriteQuotesState();
+}
+
+class _FavouriteQuotesState extends State<FavouriteQuotes> {
+  @override
   Widget build(BuildContext context) {
+
+    QuotesRepository repository = QuotesRepository();
+
+    bool isFavorite = false;
+
     return Scaffold(
       backgroundColor: Color(skyBlue),
       appBar: PreferredSize(
@@ -50,12 +66,42 @@ class FavouriteQuotes extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Image(height:200, width:200, image: AssetImage("assets/images/hearts.png"),),
-              ),
-              Center(child: BigText(text: "You don't have any favorites yet.", alignment: TextAlign.center,))
-            ],
+
+              repository.favorites.isEmpty ?
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Image(height:200, width:200, image: AssetImage("assets/images/hearts.png"),),
+                  ),
+                  Center(child: BigText(text: "You don't have any favorites yet.", alignment: TextAlign.center,))
+
+                ],
+              ) :
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: repository.favorites.length,
+                itemBuilder: (context, index) {
+                  String myquotetext = repository.favorites[index].quote;
+
+                  return QuoteWidget(snapshot: repository.favorites[index],
+                  onDataUpdated: (){
+
+                    setState(() {
+
+                    });
+
+                  },
+                  );
+                },
+                // separatorBuilder: (jcontext, index) {
+                //   return Padding(
+                //     padding: const EdgeInsets.symmetric(vertical: 4.0),
+                //     child: Divider(),
+                //   );
+                // },
+              )
+             ],
           ),
         ),
       ),

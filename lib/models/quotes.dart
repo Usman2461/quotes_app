@@ -1,10 +1,10 @@
 class Quote {
-  String quoteId = "";
+  String id = "";
   String quote;
   String author;
   String submitby = "";
 
-  Quote(this.quote, this.author, {this.submitby = "", this.quoteId = ""});
+  Quote(this.quote, this.author, {this.submitby = "", this.id = ""});
 
   Quote.fromJson(Map<String, dynamic> json)
       : this(json["quote"] as String, json["author"] as String,

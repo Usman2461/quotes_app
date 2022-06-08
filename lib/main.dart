@@ -1,3 +1,4 @@
+import 'package:daily_quotes/floor_db/quotes_repository.dart';
 import 'package:daily_quotes/models/language_constants.dart';
 import 'package:daily_quotes/providers/theme_provider.dart';
 import 'package:daily_quotes/screens/about_us/about_us.dart';
@@ -24,7 +25,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'floor_db/database.dart';
+import 'floor_db/favorite_dao.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,6 +61,24 @@ class _MyAppState extends State<MyApp> {
   void didChangeDependencies() {
     getLocale().then((locale) => setLocale(locale));
     super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _getAllFavorites();
+  }
+
+  void _getAllFavorites() async {
+    final database = await $FloorAppDatabase.databaseBuilder('quotes').build();
+
+    FavoriteDAO favoriteDAO = database.favoritesDAO;
+
+    favoriteDAO.getAllFavorites().then((favoritesList) {
+      QuotesRepository repository = QuotesRepository();
+      repository.favorites = favoritesList;
+    });
   }
 
   @override

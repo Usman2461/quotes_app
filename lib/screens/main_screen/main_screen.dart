@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daily_quotes/constants/colors.dart';
+import 'package:daily_quotes/floor_db/database.dart';
+import 'package:daily_quotes/floor_db/favorite.dart';
+import 'package:daily_quotes/floor_db/favorite_dao.dart';
+import 'package:daily_quotes/floor_db/quotes_repository.dart';
 import 'package:daily_quotes/models/quotes.dart';
 import 'package:daily_quotes/providers/theme_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +17,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../widgets/quote_widget.dart';
 import 'cdrawer.dart';
 
 class MainScreen extends StatefulWidget {
@@ -21,13 +28,15 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+
   final Stream<QuerySnapshot> quotesStream =
       FirebaseFirestore.instance.collection('quotes').snapshots();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   User? user = FirebaseAuth.instance.currentUser;
-  bool isColor = false;
+  bool isFavorite = false;
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
@@ -84,196 +93,46 @@ class _MainScreenState extends State<MainScreen> {
                 );
               }
 
-              return ListView.separated(
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    String myquotetext = snapshot.data!.docs.last.get("quote");
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  String myquotetext = snapshot.data!.docs[index].get("quote");
 
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, "/quote");
-                      },
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0)),
-                        color: Color(skyBlue),
-                        child: Padding(
-                          padding: const EdgeInsets.all(0),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  "Today's Quote",
-                                  style: TextStyle(
-                                      fontSize: 18.0, color: Colors.lightGreen),
-                                ),
-                                SizedBox(
-                                  height: 14,
-                                ),
-                                Text(
-                                  myquotetext,
-                                  style: TextStyle(
-                                      color: Color(AdarkGrey), fontSize: 30.0),
-                                ),
-                                SizedBox(
-                                  height: 5.0,
-                                ),
-                                Text(
-                                  "-- ${snapshot.data!.docs.last.get("author")}",
-                                  style: TextStyle(
-                                      color: Color(AdarkGrey),
-                                      fontWeight: FontWeight.bold,
-                                      fontStyle: FontStyle.italic),
-                                ),
-                                SizedBox(
-                                  height: 5.0,
-                                ),
-                                Text(
-                                  "-- ${snapshot.data!.docs.last.get("submitby")}",
-                                  style: TextStyle(
-                                      color: Color(AdarkGrey),
-                                      fontWeight: FontWeight.bold,
-                                      fontStyle: FontStyle.italic),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    index % 3 == 0 ? SizedBox() : SizedBox(),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              FlutterClipboard.copy(
-                                                  myquotetext);
-                                              Fluttertoast.showToast(
-                                                  msg: "Copied");
-                                            },
-                                            icon: Icon(Icons.copy_outlined)),
-                                        IconButton(
-                                            onPressed: () async {
-                                              print("object--------->");
-                                              // DocumentSnapshot document =
-                                              //     await FirebaseFirestore
-                                              //         .instance
-                                              //         .collection('quotes')
-                                              //         .doc(snapshot
-                                              //             .data!.docs.last.id)
-                                              //         .collection("Fav")
-                                              //         .doc(user?.uid)
-                                              //         .get();
+                  return QuoteWidget(snapshot: FavoriteModel.fromJson(jsonDecode(jsonEncode(snapshot.data!.docs[index].data()))), onDataUpdated: (){setState(() {
 
-                                              setState(() {
-                                                isColor
-                                                    // print(document["status"] ==
-                                                    //     "false");
-                                                    // document["status"] == true
-                                                    ? FirebaseFirestore.instance
-                                                        .collection('quotes')
-                                                        .doc(snapshot
-                                                            .data!.docs.last.id)
-                                                        .collection("Fav")
-                                                        .doc(user?.uid)
-                                                        .update({
-                                                        'status': false
-                                                      }).then((value) {
-                                                        setState(() {
-                                                          isColor = false;
-                                                        });
-                                                      })
-                                                    : FirebaseFirestore.instance
-                                                        .collection('quotes')
-                                                        .doc(snapshot
-                                                            .data!.docs.last.id)
-                                                        .collection("Fav")
-                                                        .doc(user?.uid)
-                                                        .set({
-                                                        "status": true
-                                                      }).then((value) => {
-                                                              setState(() {
-                                                                isColor = true;
-                                                              })
-                                                            });
-                                              });
-                                            },
-                                            icon: Icon(Icons.star,
-                                                color:
-                                                    // FirebaseFirestore
-                                                    //             .instance
-                                                    //             .collection(
-                                                    //                 'quotes')
-                                                    //             .doc(snapshot.data!
-                                                    //                 .docs.last.id)
-                                                    //             .collection("Fav")
-                                                    //             .doc(user?.uid)
-                                                    //             .get() ==
-                                                    //         true
-
-                                                    isColor
-                                                        ? Colors.yellow
-                                                        : Colors.white)),
-                                        IconButton(
-                                            onPressed: () async {
-                                              // DocumentSnapshot document =
-                                              //     await FirebaseFirestore
-                                              //         .instance
-                                              //         .collection('quotes')
-                                              //         .doc(snapshot
-                                              //             .data!.docs.last.id)
-                                              //         .collection("Fav")
-                                              //         .doc(user?.uid)
-                                              //         .get();
-
-                                              // print(document["status"]);
-
-                                              await Share.share(myquotetext);
-                                              // FirebaseFirestore.instance
-                                              //     .collection('quotes')
-                                              //     .doc(snapshot
-                                              //         .data!.docs.last.id)
-                                              //     .collection("Fav")
-                                              //     .doc(user?.uid)
-                                              //     .get()
-                                              //     .then((DocumentSnapshot
-                                              //             documentSnapshot) =>
-                                              //         {
-                                              //           print(documentSnapshot
-                                              //               .data())
-                                              //         });
-
-                                              // print(snapshot.data!.docs.map(
-                                              //     (DocumentSnapshot
-                                              //         documentSnapshot) {
-                                              //   Map<String, dynamic> data =
-                                              //       documentSnapshot.data()!
-                                              //           as Map<String, dynamic>;
-                                              //   return data['author'];
-                                              // }));
-                                            },
-                                            icon: Icon(Icons.share_rounded)),
-                                      ],
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (jcontext, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      child: Divider(),
-                    );
-                  },
-                  itemCount: 1);
+                  });},);
+                },
+                // separatorBuilder: (jcontext, index) {
+                //   return Padding(
+                //     padding: const EdgeInsets.symmetric(vertical: 4.0),
+                //     child: Divider(),
+                //   );
+                // },
+              );
             }),
       ),
     );
   }
+
+
+  Widget getFavoriteIcon(FavoriteModel snapshot) {
+
+    QuotesRepository repository = QuotesRepository();
+
+    for (final f in repository.favorites) {
+      if (f.id == snapshot.id) {
+        {
+          isFavorite = true;
+          return Icon(Icons.star,
+              color:  Colors.yellow);
+        }
+      }
+    }
+    isFavorite = false;
+    return Icon(Icons.star,
+        color:  Colors.white);
+  }
+
+
 }
