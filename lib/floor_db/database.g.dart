@@ -82,7 +82,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `favorites` (`id` INTEGER, `author` TEXT NOT NULL, `quote` TEXT NOT NULL, `submitby` TEXT NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `favorites` (`id` INTEGER, `author` TEXT NOT NULL, `quote` TEXT NOT NULL, `submitby` TEXT NOT NULL, PRIMARY KEY (`quote`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -111,7 +111,7 @@ class _$FavoriteDAO extends FavoriteDAO {
         _favoriteModelDeletionAdapter = DeletionAdapter(
             database,
             'favorites',
-            ['id'],
+            ['quote'],
             (FavoriteModel item) => <String, Object?>{
                   'id': item.id,
                   'author': item.author,

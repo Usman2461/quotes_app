@@ -79,7 +79,9 @@ class _FavouriteQuotesState extends State<FavouriteQuotes> {
                 ],
               ) :
               ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
+                scrollDirection: Axis.vertical,
                 itemCount: repository.favorites.length,
                 itemBuilder: (context, index) {
                   String myquotetext = repository.favorites[index].quote;

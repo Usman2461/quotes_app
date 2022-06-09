@@ -35,11 +35,14 @@ class _MainScreenState extends State<MainScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   User? user = FirebaseAuth.instance.currentUser;
-  bool isFavorite = false;
+
+
+
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+
 
     return Scaffold(
       key: _scaffoldKey,
@@ -77,7 +80,14 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
       drawer: Drawer(
-        child: CDrawer(),
+        child: CDrawer(
+          onDrawerClose: (){
+            setState(() {
+              print('on Drawer closed called');
+            });
+          },
+
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -116,23 +126,6 @@ class _MainScreenState extends State<MainScreen> {
   }
 
 
-  Widget getFavoriteIcon(FavoriteModel snapshot) {
-
-    QuotesRepository repository = QuotesRepository();
-
-    for (final f in repository.favorites) {
-      if (f.id == snapshot.id) {
-        {
-          isFavorite = true;
-          return Icon(Icons.star,
-              color:  Colors.yellow);
-        }
-      }
-    }
-    isFavorite = false;
-    return Icon(Icons.star,
-        color:  Colors.white);
-  }
 
 
 }

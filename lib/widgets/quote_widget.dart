@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:daily_quotes/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
@@ -132,6 +133,8 @@ class _QuoteWidgetState extends State<QuoteWidget> {
 
     FavoriteDAO favoriteDAO = database.favoritesDAO;
 
+    FirebaseService().addFavoriteQuoteToFirebase(favoriteModel);
+
     favoriteDAO.insertFavorite(favoriteModel).then((value) {
       QuotesRepository repository = QuotesRepository();
       repository.favorites.add(favoriteModel);
@@ -148,24 +151,19 @@ class _QuoteWidgetState extends State<QuoteWidget> {
 
     FavoriteDAO favoriteDAO = database.favoritesDAO;
 
+    FirebaseService().deleteFavoriteQuoteFromFirebase(favoriteModel);
 
-    print('favoriteModel: ${favoriteModel.quote} --  ${favoriteModel.id} --  ${favoriteModel.submitby} --  ${favoriteModel.author}');
-    QuotesRepository repository = QuotesRepository();
-    repository.favorites.removeWhere((element) {
-      if( element.quote == favoriteModel.quote && element.submitby == favoriteModel.submitby && element.author == favoriteModel.author){
+   QuotesRepository repository = QuotesRepository();
+    print('element data:  ${favoriteModel.quote}');
+    repository.favorites.removeWhere((element) => element.quote == favoriteModel.quote);
+    favoriteDAO.deleteFromFavorite(favoriteModel).then((value) {
+      widget.onDataUpdated();
+      setState(() {
 
-        favoriteDAO.deleteFromFavorite(element).then((value) {
-          widget.onDataUpdated();
-          setState(() {
-            // to update star icon
-          });
-          print('favorite deleted successfully');
-        });
-        return true;
-      }
-    return false;
+        // to update star icon
+      });
+      print('favorite deleted successfully');
     });
-
 
 
 

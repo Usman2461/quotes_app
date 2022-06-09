@@ -16,9 +16,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 
-class CDrawer extends StatelessWidget {
-  CDrawer({Key? key}) : super(key: key);
+class CDrawer extends StatefulWidget {
+  CDrawer({Key? key, required this.onDrawerClose}) : super(key: key);
 
+  final Function onDrawerClose;
+
+  @override
+  State<CDrawer> createState() => _CDrawerState();
+}
+
+class _CDrawerState extends State<CDrawer> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -146,7 +153,7 @@ class CDrawer extends StatelessWidget {
                       title: 'Favorites',
                       onTap: () {
                         Navigator.of(context).push(CustomPageRoute2(
-                            child: FavouriteQuotes(), begin: Offset(1, 0)));
+                            child: FavouriteQuotes(), begin: Offset(1, 0))).then((value) => widget.onDrawerClose());
                       },
                       icon: Icon(Icons.favorite),
                     ),

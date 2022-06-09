@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:daily_quotes/floor_db/favorite.dart';
+import 'package:daily_quotes/floor_db/quotes_repository.dart';
 import 'package:daily_quotes/models/bug.dart';
 import 'package:daily_quotes/models/quotes.dart';
 import 'package:daily_quotes/widgets/progress_dialog.dart';
@@ -8,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class FirebaseService extends ChangeNotifier {
   CollectionReference quotes = FirebaseFirestore.instance.collection('quotes');
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
   CollectionReference bugs = FirebaseFirestore.instance.collection('reportedbugs');
 
   Future<void> addQuote(Quote quote, context) {
@@ -34,6 +37,27 @@ class FirebaseService extends ChangeNotifier {
       Fluttertoast.showToast(msg: "Failed to add quote");
     });
 
+  }
+
+  Future<void> addFavoriteQuoteToFirebase(FavoriteModel quote) {
+    QuotesRepository repository = QuotesRepository();
+    return users.doc(repository.user.uid).collection('fav').add({
+      'quote': quote.quote, // John Doe
+      'author': quote.author, // Stokes and Sons
+      'submitby': quote.submitby
+    }).then((value) {
+      print('quote added successfully');
+    });
+  }
+
+  Future<void> deleteFavoriteQuoteFromFirebase(FavoriteModel quote) async{
+    QuotesRepository repository = QuotesRepository();
+    return users.doc(repository.user.uid).collection('fav').where('quote', isEqualTo: quote.quote).get().then((value) async {
+      for (var doc in value.docs){
+        await doc.reference.delete();
+        print('quote deleted successfully');
+      }
+    });
   }
 
   Future<void> reportABug(Bug bug, context) {

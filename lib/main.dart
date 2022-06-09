@@ -21,11 +21,12 @@ import 'package:daily_quotes/screens/support_screen/support_screen.dart';
 import 'package:daily_quotes/services/firebase_service.dart';
 import 'package:daily_quotes/widgets/rateInit.dart';
 import 'package:daily_quotes/widgets/rate_app.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'floor_db/database.dart';
 import 'floor_db/favorite_dao.dart';
@@ -66,18 +67,28 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
+    _getUserData();
     _getAllFavorites();
   }
+
+
+  void _getUserData() {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    QuotesRepository repository = QuotesRepository();
+    repository.user = user!;
+  }
+
 
   void _getAllFavorites() async {
     final database = await $FloorAppDatabase.databaseBuilder('quotes').build();
 
     FavoriteDAO favoriteDAO = database.favoritesDAO;
 
-    favoriteDAO.getAllFavorites().then((favoritesList) {
+    favoriteDAO.getAllFavorites().then((favoritesList)  {
       QuotesRepository repository = QuotesRepository();
       repository.favorites = favoritesList;
+
     });
   }
 

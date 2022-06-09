@@ -4,14 +4,16 @@ import 'package:floor/floor.dart';
 @Entity(tableName: 'favorites')
 class FavoriteModel {
   FavoriteModel({
+
     this.id,
     required this.author,
     required this.quote,
     required this.submitby,
   });
-  @primaryKey
-   int? id;
+
+  int? id;
   late final String author;
+  @primaryKey
   late final String quote;
   late final String submitby;
 

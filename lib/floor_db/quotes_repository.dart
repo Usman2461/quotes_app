@@ -1,6 +1,7 @@
 
 
 import 'package:daily_quotes/floor_db/favorite.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class QuotesRepository {
 
@@ -14,5 +15,6 @@ class QuotesRepository {
   }
 
   late  List<FavoriteModel> favorites = [];
+  late User user;
 
 }
