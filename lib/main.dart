@@ -71,24 +71,25 @@ class _MyAppState extends State<MyApp> {
     _getAllFavorites();
   }
 
-
   void _getUserData() {
     User? user = FirebaseAuth.instance.currentUser;
 
+    print('testLog: current user is : ${user}');
     QuotesRepository repository = QuotesRepository();
-    repository.user = user!;
+    if (user != null) {
+      print('testLog: user is not null and user id is : ${user.uid}');
+      repository.user = user;
+    }
   }
-
 
   void _getAllFavorites() async {
     final database = await $FloorAppDatabase.databaseBuilder('quotes').build();
 
     FavoriteDAO favoriteDAO = database.favoritesDAO;
 
-    favoriteDAO.getAllFavorites().then((favoritesList)  {
+    favoriteDAO.getAllFavorites().then((favoritesList) {
       QuotesRepository repository = QuotesRepository();
       repository.favorites = favoritesList;
-
     });
   }
 

@@ -28,7 +28,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-
   final Stream<QuerySnapshot> quotesStream =
       FirebaseFirestore.instance.collection('quotes').snapshots();
 
@@ -36,13 +35,25 @@ class _MainScreenState extends State<MainScreen> {
 
   User? user = FirebaseAuth.instance.currentUser;
 
+  @override
+  void initState() {
+    super.initState();
+    _getUserData();
+  }
 
+  void _getUserData() {
+    User? user = FirebaseAuth.instance.currentUser;
 
+    QuotesRepository repository = QuotesRepository();
+    if (user != null) {
+      print('testLog: user is not null and user id is : ${user.uid}');
+      repository.user = user;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-
 
     return Scaffold(
       key: _scaffoldKey,
@@ -81,12 +92,11 @@ class _MainScreenState extends State<MainScreen> {
       ),
       drawer: Drawer(
         child: CDrawer(
-          onDrawerClose: (){
+          onDrawerClose: () {
             setState(() {
               print('on Drawer closed called');
             });
           },
-
         ),
       ),
       body: Padding(
@@ -109,9 +119,13 @@ class _MainScreenState extends State<MainScreen> {
                 itemBuilder: (context, index) {
                   String myquotetext = snapshot.data!.docs[index].get("quote");
 
-                  return QuoteWidget(snapshot: FavoriteModel.fromJson(jsonDecode(jsonEncode(snapshot.data!.docs[index].data()))), onDataUpdated: (){setState(() {
-
-                  });},);
+                  return QuoteWidget(
+                    snapshot: FavoriteModel.fromJson(jsonDecode(
+                        jsonEncode(snapshot.data!.docs[index].data()))),
+                    onDataUpdated: () {
+                      setState(() {});
+                    },
+                  );
                 },
                 // separatorBuilder: (jcontext, index) {
                 //   return Padding(
@@ -124,8 +138,4 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
-
-
-
-
 }
