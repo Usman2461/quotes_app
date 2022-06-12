@@ -1,17 +1,14 @@
 import 'dart:convert';
 
 import 'package:clipboard/clipboard.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daily_quotes/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../constants/colors.dart';
-import '../floor_db/database.dart';
-import '../floor_db/favorite.dart';
-import '../floor_db/favorite_dao.dart';
-import '../floor_db/quotes_repository.dart';
+import '../favorite_utils/favorite.dart';
+import '../favorite_utils/quotes_repository.dart';
 
 class QuoteWidget extends StatefulWidget {
   const QuoteWidget({Key? key, required this.snapshot, required this.onDataUpdated}) : super(key: key);
@@ -107,6 +104,8 @@ class _QuoteWidgetState extends State<QuoteWidget> {
 
                             }
 
+
+
                           },
                           icon:  getFavoriteIcon(FavoriteModel.fromJson(jsonDecode(jsonEncode(widget.snapshot)))),),
                         IconButton(
@@ -129,45 +128,24 @@ class _QuoteWidgetState extends State<QuoteWidget> {
 
 
   void _addToFavorites(FavoriteModel favoriteModel) async {
-    final database = await $FloorAppDatabase.databaseBuilder('quotes').build();
-
-    FavoriteDAO favoriteDAO = database.favoritesDAO;
-
-    FirebaseService().addFavoriteQuoteToFirebase(favoriteModel);
-
-    favoriteDAO.insertFavorite(favoriteModel).then((value) {
-      QuotesRepository repository = QuotesRepository();
-      repository.favorites.add(favoriteModel);
-      setState(() {
-        // to update star icon
-      });
-      print('favorite inserted successfully');
+    FirebaseService().addFavoriteQuoteToFirebase(favoriteModel).then((value) {
+      widget.onDataUpdated();
     });
+
+    QuotesRepository repository = QuotesRepository();
+    repository.favorites.add(favoriteModel);
+
   }
 
 
   void _deleteFromFavorites(FavoriteModel favoriteModel) async {
-    final database = await $FloorAppDatabase.databaseBuilder('quotes').build();
-
-    FavoriteDAO favoriteDAO = database.favoritesDAO;
-
-    FirebaseService().deleteFavoriteQuoteFromFirebase(favoriteModel);
-
-   QuotesRepository repository = QuotesRepository();
-    print('element data:  ${favoriteModel.quote}');
-    repository.favorites.removeWhere((element) => element.quote == favoriteModel.quote);
-    favoriteDAO.deleteFromFavorite(favoriteModel).then((value) {
+    Fluttertoast.showToast(msg: 'Removing please wait');
+    QuotesRepository repository = QuotesRepository();
+    repository.favorites.removeWhere((element) => element.quote == favoriteModel.quote && element.submitby == favoriteModel.submitby);
+    FirebaseService().deleteFavoriteQuoteFromFirebase(favoriteModel).then((value) {
       widget.onDataUpdated();
-      setState(() {
-
-        // to update star icon
-      });
-      print('favorite deleted successfully');
+      Fluttertoast.showToast(msg: 'Removed');
     });
-
-
-
-
   }
 
   Widget getFavoriteIcon(FavoriteModel snapshot) {

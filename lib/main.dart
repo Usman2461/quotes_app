@@ -1,4 +1,5 @@
-import 'package:daily_quotes/floor_db/quotes_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:daily_quotes/favorite_utils/favorite.dart';
 import 'package:daily_quotes/models/language_constants.dart';
 import 'package:daily_quotes/providers/theme_provider.dart';
 import 'package:daily_quotes/screens/about_us/about_us.dart';
@@ -27,9 +28,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import 'floor_db/database.dart';
-import 'floor_db/favorite_dao.dart';
+import 'favorite_utils/quotes_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,30 +67,20 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _getUserData();
-    _getAllFavorites();
   }
+
 
   void _getUserData() {
     User? user = FirebaseAuth.instance.currentUser;
 
-    print('testLog: current user is : ${user}');
     QuotesRepository repository = QuotesRepository();
-    if (user != null) {
-      print('testLog: user is not null and user id is : ${user.uid}');
+    if(user!= null) {
       repository.user = user;
     }
   }
 
-  void _getAllFavorites() async {
-    final database = await $FloorAppDatabase.databaseBuilder('quotes').build();
 
-    FavoriteDAO favoriteDAO = database.favoritesDAO;
 
-    favoriteDAO.getAllFavorites().then((favoritesList) {
-      QuotesRepository repository = QuotesRepository();
-      repository.favorites = favoritesList;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

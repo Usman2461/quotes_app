@@ -1,11 +1,11 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:daily_quotes/constants/colors.dart';
-import 'package:daily_quotes/floor_db/quotes_repository.dart';
 import 'package:daily_quotes/widgets/big_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../favorite_utils/quotes_repository.dart';
 import '../../widgets/quote_widget.dart';
 
 class FavouriteQuotes extends StatefulWidget {
@@ -90,8 +90,7 @@ class _FavouriteQuotesState extends State<FavouriteQuotes> {
                   onDataUpdated: (){
 
                     setState(() {
-
-                    });
+                            });
 
                   },
                   );

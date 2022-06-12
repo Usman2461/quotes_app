@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:daily_quotes/floor_db/favorite.dart';
-import 'package:daily_quotes/floor_db/quotes_repository.dart';
 import 'package:daily_quotes/models/bug.dart';
 import 'package:daily_quotes/models/quotes.dart';
 import 'package:daily_quotes/widgets/progress_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import '../favorite_utils/favorite.dart';
+import '../favorite_utils/quotes_repository.dart';
 
 class FirebaseService extends ChangeNotifier {
   CollectionReference quotes = FirebaseFirestore.instance.collection('quotes');
